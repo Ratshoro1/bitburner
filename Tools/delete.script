@@ -1,0 +1,5 @@
+if (args.lenght == 0) {
+  tprint ('Insert server you want to delete as arg n°1');
+  exit ();
+}
+deleteServer (args[0]);

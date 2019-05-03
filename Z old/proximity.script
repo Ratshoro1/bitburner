@@ -1,0 +1,10 @@
+servers = getPurchasedServers ();
+target = read ('Bankserver.txt').split (',');
+arg = target[0];
+
+for (i = 0; i < servers.length; ++i) {
+  res = getServerRam (servers[i]);
+  scp ('hack-joe.script', 'home', servers[i]);
+  var thread = Math.floor (res[0] / getScriptRam ('hack-joe.script'));
+  exec ('hack-joe.script', servers[i], thread, arg);
+}

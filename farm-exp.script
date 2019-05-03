@@ -1,0 +1,15 @@
+/* server = getPurchasedServers();
+deleteServer(server[0]);
+purchaseServer("auto-exp", 131072);
+*/
+var server = 'auto-exp';
+var hackram = getScriptRam ('weaken.script');
+var ramsize = getServerRam (server);
+var threads = Math.floor (parseFloat (ramsize / hackram));
+
+print (hackram);
+print (ramsize);
+print (threads);
+
+scp ('weaken.script', 'home', server);
+exec ('weaken.script', server, 72817, 'foodnstuff');

@@ -1,0 +1,11 @@
+servers = scan ();
+
+for (var i = 0; i < servers.length; ++i) {
+  var serv = servers[i];
+  killall (serv);
+}
+
+for (var i = 0; i < servers.length; ++i) {
+  var serv = servers[i];
+  killall (serv);
+}

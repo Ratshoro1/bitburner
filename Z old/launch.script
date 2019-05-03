@@ -1,0 +1,90 @@
+function spider () {
+  // Return an array of all identifiable servers
+
+  // Create a serversSeen array, containing only 'home' for now
+  serversSeen = ['home'];
+
+  // For every server we've seen so far, do a scan
+  for (i = 0; i < serversSeen.length; i++) {
+    thisScan = scan (serversSeen[i]);
+    // Loop through results of the scan, and add any new servers
+    for (j = 0; j < thisScan.length; j++) {
+      // If this server isn't in serversSeen, add it
+      if (serversSeen.indexOf (thisScan[j]) === -1) {
+        serversSeen.push (thisScan[j]);
+      }
+    }
+  }
+  return serversSeen;
+}
+
+function defaultHack (server) {
+  hack (server);
+  return true;
+}
+
+function boolToNumber (check) {
+  if (check === true) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+Brute = boolToNumber (fileExists ('brutessh.exe', 'home')); //Not able to add in True and false
+Crack = boolToNumber (fileExists ('ftpcrack.exe', 'home'));
+Relay = boolToNumber (fileExists ('relaysmtp.exe', 'home'));
+Http = boolToNumber (fileExists ('httpworm.exe', 'home'));
+Sql = boolToNumber (fileExists ('sqlinject.exe', 'home'));
+BreackThrough = Brute + Crack + Relay + Http + Sql;
+
+servers = scan ();
+print (servers);
+
+for (i = 0; i < servers.length; ++i) {
+  if (servers[i] != 'home') {
+    if (getServerNumPortsRequired (servers[i]) > BreackThrough) {
+      print ('Too many ports needed');
+      print ('I need ');
+      print (getServerNumPortsRequired (servers[i]));
+      print ('For');
+      print (servers[i]);
+    }
+
+    if (getServerNumPortsRequired (servers[i]) <= BreackThrough) {
+      if (Sql) {
+        sqlinject (servers[i]);
+      }
+      if (Http) {
+        httpworm (servers[i]);
+      }
+      if (Crack) {
+        ftpcrack (servers[i]);
+      }
+      if (Relay) {
+        relaysmtp (servers[i]);
+      }
+      if (Brute) {
+        brutessh (servers[i]);
+      }
+      nuke (servers[i]);
+    }
+
+    if (hasRootAccess (servers[i])) {
+      res = getServerRam (servers[i]);
+      print (res[0]);
+      scp ('hack-joe.script', 'home', servers[i]);
+      if (res[0] == 32);
+      {
+        exec ('hack-joe.script', servers[i], 12);
+      }
+      if (res[0] == 16);
+      {
+        exec ('hack-joe.script', servers[i], 6);
+      }
+      if (res[0] == 8);
+      {
+        exec ('hack-joe.script', servers[i], 3);
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+//servers=scan();
+servers = read ('servers.txt').split (',');
+
+while (true) {
+  for (i = 0; i < servers.length; ++i) {
+    if (servers[i] != 'home') {
+      if (hasRootAccess (servers[i])) {
+        killall (servers[i]);
+      }
+    }
+  }
+}
+
+servers = scan (home);
+while (true) {
+  for (i = 0; i < servers.length; ++i) {
+    if (servers[i] != 'home') {
+      if (hasRootAccess (servers[i])) {
+        killall (servers[i]);
+      }
+    }
+  }
+}

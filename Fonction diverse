@@ -1,0 +1,5 @@
+
+Read
+servers = read("servers.txt").split(",");
+tprint(servers);
+

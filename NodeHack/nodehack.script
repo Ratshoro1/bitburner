@@ -1,0 +1,9 @@
+while (true) {
+  hl = hacknetnodes[0].level;
+  for (i = 1; i < hacknetnodes.length; i = i + 1) {
+    while (hacknetnodes[i].level < hl)
+      hacknetnodes[i].upgradeLevel (1);
+    hacknetnodes[i].upgradeRam ();
+    hacknetnodes[i].upgradeCore ();
+  }
+}

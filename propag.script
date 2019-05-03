@@ -1,0 +1,88 @@
+servers = read ('servers.txt').split (',');
+target = read ('Bankserver.txt').split (',');
+arg = target[0];
+
+function defaultHack (server) {
+  hack (server);
+  return true;
+}
+
+function boolToNumber (check) {
+  if (check === true) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+Brute = boolToNumber (fileExists ('brutessh.exe', 'home')); //Not able to add in True and false
+Crack = boolToNumber (fileExists ('ftpcrack.exe', 'home'));
+Relay = boolToNumber (fileExists ('relaysmtp.exe', 'home'));
+Http = boolToNumber (fileExists ('httpworm.exe', 'home'));
+Sql = boolToNumber (fileExists ('sqlinject.exe', 'home'));
+BreackThrough = Brute + Crack + Relay + Http + Sql;
+
+print (servers);
+
+proximity = getPurchasedServers ();
+
+for (i = 0; i < proximity.length; ++i) {
+  res = getServerRam (proximity[i]);
+  scp ('hack-joe.script', 'home', proximity[i]);
+  var thread = Math.floor (res[0] / getScriptRam ('hack-joe.script'));
+  exec ('hack-joe.script', proximity[i], thread, arg);
+}
+
+for (i = 0; i < servers.length; ++i) {
+  if (servers[i] != 'home') {
+    if (servers[i].indexOf ('auto') == -1) {
+      if (getServerNumPortsRequired (servers[i]) > BreackThrough) {
+        print ('Too many ports needed');
+      }
+
+      if (getServerNumPortsRequired (servers[i]) <= BreackThrough) {
+        if (hasRootAccess (servers[i])) {
+        } else {
+          if (Sql) {
+            sqlinject (servers[i]);
+          }
+          if (Http) {
+            httpworm (servers[i]);
+          }
+          if (Crack) {
+            ftpcrack (servers[i]);
+          }
+          if (Relay) {
+            relaysmtp (servers[i]);
+          }
+          if (Brute) {
+            brutessh (servers[i]);
+          }
+          nuke (servers[i]);
+        }
+      }
+
+      if (hasRootAccess (servers[i])) {
+        res = getServerRam (servers[i]);
+        print (res[0]);
+        scp ('hack-joe.script', 'home', servers[i]);
+        var thread = Math.floor (res[0] / getScriptRam ('hack-joe.script'));
+        exec ('hack-joe.script', servers[i], thread, arg);
+        //        if(res[0] == 32){
+        //          exec('hack-joe.script', servers[i], thread);
+        //    }
+        //        if(res[0] == 16){
+        //          exec('hack-joe.script', servers[i], 6);
+        //        }
+        //       if(res[0] == 8){
+        //          exec('hack-joe.script', servers[i], 3);
+        //      }
+        //       if(res[0] == 64){
+        //           exec('hack-joe.script', servers[i], 24);
+        //      }
+        //       if(res[0] == 128){
+        //          exec('hack-joe.script', servers[i], 48);
+      }
+    }
+  }
+  // }
+}
