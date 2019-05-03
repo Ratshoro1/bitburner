@@ -1,0 +1,31 @@
+myHackLevel = getHackingLevel();
+bestTargetIndex = 1;
+bestTargetScore = 0;
+rows = read('servers.txt').split(',');
+target = read('Bankserver.txt').split(',');
+
+for (i = 0; i < rows.length; ++i) {
+  if (rows[i] != 'home') {
+    if (rows[i].indexOf('auto') == -1) {
+      svMaxMoney = getServerMaxMoney(rows[i]);
+      svMinSec = getServerMinSecurityLevel(rows[i]);
+      svGrowRt = getServerGrowth(rows[i]);
+      svExecTime = getHackTime(rows[i]);
+      svScore = ((100 - svMinSec) * svMaxMoney * svGrowRt) / svExecTime;
+      if (svScore > bestTargetScore) {
+        bestTargetScore = svScore;
+        bestTargetIndex = i;
+      }
+    }
+    //tprint("Done Testing " + svName);
+  }
+}
+
+if(target !=  )
+
+var data = 1;
+var port = 2;
+clear(port);
+write('Bankserver.txt', rows[bestTargetIndex], 'w');
+tprint(rows[bestTargetIndex]);
+write(port, data);
