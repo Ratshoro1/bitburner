@@ -1,0 +1,15 @@
+rm("servers.txt");
+var spi = false;
+while (fileExists("servers.txt")) {
+    exec("spider.script");
+}
+
+rm("Bankserver.txt");
+
+var spi = false;
+while (fileExists("Bankserver.txt")) {
+    exec("target.script");
+}
+
+exec("buy.script");
+exec("propag.script");
