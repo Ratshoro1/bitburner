@@ -1,0 +1,124 @@
+//////////////////////
+//d_MyServerControl_v2
+//////////////////////
+//
+function find_smallest_server() {
+    var serverloop = getPurchasedServers().lenght;
+    var MyServers = getPurchasedServers();
+    var reservedservers = ['auto-exp'];
+    if (MyServers.length == reservedservers.length) {
+        return "None";
+    }
+
+    var smallestserver = MyServers[reservedservers.length];
+    var smallestsize = getServerRam(smallestserver)[0];
+    for (i = reservedservers.length; i < MyServers.length; ++i) {
+        var newsize = getServerRam(MyServers[i])[0];
+        if (newsize < smallestsize) {
+            smallestserver = MyServers[i];
+            smallestsize = newsize;
+        }
+    }
+
+    print("The smallest non reserved server is " + smallestserver);
+
+    return smallestserver;
+}
+
+
+scriptlist = ["hack-joe.script"];
+
+//controls = read("MyServerControls.txt").split(",")
+targetserver = read("Bankserver.txt").split(",");
+
+target = read("Bankserver.txt").split(",");
+arg = target[0];
+
+//Set Targets
+target = targetserver;
+moneyThresh = getServerMaxMoney(target) * 0.9;
+securityThresh = getServerMinSecurityLevel(target);
+//tprint("Debug 1");
+//target = targetserver[1];
+//moneyThresh = targetserver[4];
+//securityThresh = targetserver[7];
+
+//tprint("Debug 2");
+//Initialize size
+// smallestserver = find_smallest_server();
+smallestserver = find_smallest_server();
+tprint(smallestserver);
+if (smallestserver == "None") {
+    ramsize = 8;
+} else {
+    ramsize = getServerRam(smallestserver)[0] * 2;
+}
+
+//tprint("Debug 3");
+basename = "auto-";
+var serverlist = getPurchasedServers();
+var serverloop = serverlist.lenght;
+
+//calculate best ram size
+availablemoney = getServerMoneyAvailable("home");
+
+//Use no more than half of current funds
+availablemoney = availablemoney * 0.5;
+
+tprint("Current server size target is " + ramsize + "GB");
+//Divide number of required servers
+availablemoney = Math.floor(availablemoney / serverloop);
+pricecheck = 0;
+
+if (availablemoney > 55000 * ramsize) pricecheck = 1;
+while (pricecheck) {
+    tprint("Found more available funds");
+    ramsize = ramsize * 2;
+    if (availablemoney < 55000 * ramsize) {
+        pricecheck = 0;
+        //Revert to old ramsize
+        ramsize = ramsize / 2;
+    }
+}
+
+tprint("Upgrading to " + ramsize + "GB");
+
+while (true) {
+    //moneyThresh = getServerMaxMoney(target) * 0.9;
+    //securityThresh = getServerMinSecurityLevel(target);
+    //Attempt to fill out servers
+    //i = reservedservers.length;
+    var z = 0;
+    var serverloop = 25;
+
+    while (z < serverloop) {
+        availablemoney = getServerMoneyAvailable("home");
+        availablemoney = availablemoney * 0.1;
+        MyServers = getPurchasedServers();
+        if (availablemoney > 55000 * ramsize) {
+            if (MyServers.length == 25) {
+                deleteserver = find_smallest_server();
+                while (isRunning(scriptlist, deleteserver, arg) == true || isRunning(scriptlist, deleteserver, "foodnstuff" == true)) {
+                    killall(deleteserver);
+                    print("Killing scripts on " + deleteserver);
+                }
+                //Servers full
+                //Delete first non reserved server
+                deleteServer(deleteserver);
+            }
+            hostname = purchaseServer(basename + ramsize + "GB" + "-" + z, ramsize);
+            scp(scriptlist, "home", hostname); //test
+
+            hackram = getScriptRam(scriptlist[0], hostname);
+            threads = Math.floor(ramsize / hackram);
+            exec(scriptlist[0], hostname, threads, arg);
+
+
+            ++z;
+        }
+    }
+    ramsize = ramsize * 2;
+    tprint("Server List Full");
+    tprint("Upgrading to " + ramsize + "GB");
+    //write("MyServerControls.txt", target + "," + ramsize , "w")
+}
