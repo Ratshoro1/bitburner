@@ -1,0 +1,21 @@
+/* exec ('tor.script');
+exec ('program-manager.script');
+ */
+rm ('servers.txt');
+var port = 0;
+write (1, port);
+
+while (peek (port) == 0) {
+  exec ('spider-port.script');
+}
+
+/* rm ('Bankserver.txt');
+
+var spi = false;
+while (fileExists ('Bankserver.txt') == false) {
+  exec ('target.script');
+}
+
+exec ('buy.script');
+exec ('propag.script');
+ */
