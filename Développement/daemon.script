@@ -1,0 +1,18 @@
+while(true){
+    
+    sleep(10800000)
+    var data = 0;
+    var portcom = 2;
+    var portmod = 3;
+
+    clear(port);
+    exec('target-port.script', 'home');
+
+    while (peek(port) == 'NULL PORT DATA') {
+        sleep(100);
+    }
+
+    if (peek(portmod) = ! 'NULL PORT DATA') {
+        write("")
+    }
+}

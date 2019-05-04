@@ -1,0 +1,25 @@
+/* exec ('tor.script');
+exec ('program-manager.script'); */
+
+rm('servers.txt');
+
+var data = 0;
+var port = 1;
+clear(port);
+exec('spider-port.script', 'home');
+while (peek(port) == 'NULL PORT DATA') {
+  sleep(100);
+}
+
+var data = 0;
+var portcom = 2;
+clear(portcom);
+exec('target-port.script', 'home');
+
+while (peek(portcom) == 'NULL PORT DATA') {
+  sleep(100);
+}
+
+exec('buy.script');
+exec('propag.script');
+exec('daemon.script');

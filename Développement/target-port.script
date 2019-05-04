@@ -21,11 +21,17 @@ for (i = 0; i < rows.length; ++i) {
   }
 }
 
-if(target !=  )
 
 var data = 1;
-var port = 2;
-clear(port);
+var portcom = 2;
+var portmod = 3;
+clear(portcom);
+clear(portmod);
+
 write('Bankserver.txt', rows[bestTargetIndex], 'w');
 tprint(rows[bestTargetIndex]);
-write(port, data);
+write(portcom, data);
+
+if (target != rows[bestTargetIndex) {
+  write(portmod, rows[bestTargetIndex);
+}
